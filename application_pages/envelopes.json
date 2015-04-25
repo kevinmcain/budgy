@@ -1,0 +1,26 @@
+[ 
+	{
+		"bid": "1",
+		"cid": "1",
+		"category": "Groceries",
+		"amount": "300",
+		"spent": "120.25",
+		"balance": "179.75"
+	},
+	{
+		"bid": "1",
+		"cid": "2",
+		"category": "Gas",
+		"amount": "225",
+		"spent": "75",
+		"balance": "150"
+	},
+	{
+		"bid": "1",
+		"cid": "3",
+		"category": "Entertainment",
+		"amount": "325",
+		"spent": "0",
+		"balance": "0"
+	}
+]
