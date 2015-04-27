@@ -1,27 +1,50 @@
 function initXHR(x) {
 	console.log(x); 
 	if (x == 'envelopes') {
-		retrieveEnvelopesFromServer('envelopes.json');
+	
+		retrieveJsonFileFromServer
+			('envelopes.json', populateTable);
+	}
+	else if (x == 'main')
+	{
+		retrieveJsonFileFromServer
+			('envelopes.json', populateMain);
 	}
 }
 
-function retrieveEnvelopesFromServer(url) {
+function retrieveJsonFileFromServer(url, fillMethod) {
 	var xmlhttp = new XMLHttpRequest();
 	var envelopeList;
 
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			var envelopeList = JSON.parse(xmlhttp.responseText);
-			populateTable('envelopes', envelopeList);
+			fillMethod(envelopeList);
 		}
 	}
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
 }
 
-function populateTable(envelopeTableId, envelopeList) {
+function populateMain(envelopeList) {
 
-	element = document.getElementById(envelopeTableId)
+	element = document.getElementById('main');
+
+	var tableRows = "";
+
+	for (var i = 0; i < envelopeList.length; i++) {
+		tableRows += "<div class=\"box\">"; 
+		tableRows += "<p class=\"balance\">" + envelopeList[i].balance  + "</p>";
+		tableRows += "<h4>" + envelopeList[i].category  + "</h4>";
+		tableRows += "</div>"
+	}
+
+	element.innerHTML = tableRows;
+}
+
+function populateTable(envelopeList) {
+
+	element = document.getElementById('envelopes')
 		.getElementsByTagName('tbody')[0];
 
 	var tableRows = "";
