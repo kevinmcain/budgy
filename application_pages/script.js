@@ -50,12 +50,25 @@ function populateTable(envelopeList) {
 	var tableRows = "";
 	
 	for (var i = 0; i < envelopeList.length; i++) {
+	
 		tableRows += "<tr>"; 
-		tableRows += "<td>" + envelopeList[i].category  + "</td>";
-		tableRows += "<td>" + envelopeList[i].amount  + "</td>";
+		
+		tableRows += "<td class=\"category\">" 
+			+ envelopeList[i].category  + "</td>";		
+					
+		tableRows += "<td class=\"amount\">" 
+			+ envelopeList[i].amount  + "</td>";
+			
 		tableRows += "<td>" + envelopeList[i].spent  + "</td>";
 		tableRows += "<td>" + envelopeList[i].balance  + "</td>";
-		tableRows += "<td></td>";
+		
+		tableRows += "<td id=\"edit\"><a href=\"javascript:void(0);\""
+			+ "class=\"glyphicon glyphicon-pencil\"></a>"
+			+ "<input hidden type=\"radio\" name=\"select\"></input></td>";
+			
+		tableRows += "<td id=\"delete\"><a href=\"javascript:void(0);\""
+			+ "class=\"glyphicon glyphicon-trash\"></a></td>";
+			
 		tableRows += "</tr>"
 	}
 
