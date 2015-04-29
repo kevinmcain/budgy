@@ -12,6 +12,12 @@ $(document).ready(function(){
         $('#editCategory').val($(that).parent().find('.category').html());
         $('#editAmount').val($(that).parent().find('.amount').html());
     }
+	
+	$("#envelopes tbody").on("click", "#delete", function(event){
+		var table = $(this).parent().parent()[0];
+		var i = $(this).parent()[0].rowIndex -1;
+		table.deleteRow(i);
+	});
     
     $('.btn-save').click(function(){
         // Update the new values inside the Table
