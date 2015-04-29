@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	
-    $("#envelopes tbody" ).on( "click", "tr", function(event) {
+    $("#envelopes tbody" ).on( "click", "#edit", function(event) {
             var that = this;
             $(this).find(':radio').prop("checked",true);
             loadData(that);
@@ -9,8 +9,8 @@ $(document).ready(function(){
     });
 
     function loadData(that){
-        $('#editCategory').val($(that).find('.category').html());
-        $('#editAmount').val($(that).find('.amount').html());
+        $('#editCategory').val($(that).parent().find('.category').html());
+        $('#editAmount').val($(that).parent().find('.amount').html());
     }
     
     $('.btn-save').click(function(){
