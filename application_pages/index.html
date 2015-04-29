@@ -36,32 +36,32 @@ p.balance {
 </style>
 <head>
 <body onload="initXHR('main')">
-<center> <h1> Envelope System </h1> </center>
-<table class="menu" style="width:100%">
-<tr>
-<th> <a href=index.html> HOME </a> </th>
-<th> <a href=manageEnvelopes.html> MANAGE ENVELOPES </a>  </th>
-<th> <a href=index.html> REPORTS </a> </th>
-<th> <a href=index.html> TRANSACTIONS </a> </th>
-<th> <a href=index.html> LOGOUT? </a> </th>
-</tr>
-</table>
+    <div>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#" style="color: #00E600">ıllıllı вυ∂gу ıllıllı</a>
+                </div>
+                <div>
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#" onclick="homePage();><span class="glyphicon glyphicon-home" style="color: #00E600"></span> HOME</a></li>
+                        <li><a href=manageEnvelopes.html><span class="glyphicon glyphicon-envelope" style="color: #00E600"></span> ENVELOPES</a></li>
+                        <li><a href="#" onclick="manageTransactions()"><span class="glyphicon glyphicon-credit-card" style="color: #00E600"></span> TRANSACTIONS</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-stats" style="color: #00E600"></span> REPORTS</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-question-sign" style="color: #00E600"></span> HELP</a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#"><span class="glyphicon glyphicon-user" style="color: #00E600"></span> Sign Up</a></li>
+                        <li><a href="#" onclick="homelogout()"><span class="glyphicon glyphicon-log-in" style="color: #00E600"></span> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 <br><br><br>
 <center>
 <div id="main">
-<!-- 	<div class="box"><p class="balance">30000</p><h4>Groceries</h4></div>
-	<div class="box"><p class="balance">20000</p><h4>Gas</h4></div>
-	<div class="box"><p class="balance">100</p><h4>Entertainment</h4></div>
-	<div class="box"><p class="balance">30000</p><h4>Entertainment</h4></div>
-	<div class="box"><p class="balance">20000</p><h4>Blow</h4></div>
-	<div class="box"><p class="balance">100</p><h4>Life Insurance</h4></div>
-	<div class="box"><p class="balance">30000</p><h4>Savings</h4></div>
-	<div class="box"><p class="balance">20000</p><h4>Beauty & Cosmetics</h4></div>
-	<div class="box"><p class="balance">100</p><h4>Vacation</h4></div>
-	<div class="box"><p class="balance">30000</p><h4>Gardener</h4></div>
-	<div class="box"><p class="balance">20000</p><h4>Home Loan</h4></div>
-	<div class="box"><p class="balance">100</p><h4>Car Loan</h4></div>
-	<div class="box"><p class="balance">100</p><h4>Credit Card</h4></div> -->
+	<!-- Users Budget/ Envelopes Populated by XHR-->
 </div>
 </center>
 		<script src="script.js"></script>
