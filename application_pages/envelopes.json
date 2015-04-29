@@ -10,7 +10,7 @@
 	{
 		"bid": "1",
 		"cid": "2",
-		"category": "Gas",
+		"category": "Education",
 		"amount": "225",
 		"spent": "75",
 		"balance": "150"
@@ -26,7 +26,7 @@
 	{
 		"bid": "1",
 		"cid": "1",
-		"category": "Blow",
+		"category": "Gifts/Donations",
 		"amount": "300",
 		"spent": "120.25",
 		"balance": "179.75"
@@ -34,7 +34,7 @@
 	{
 		"bid": "1",
 		"cid": "2",
-		"category": "Life Insurance",
+		"category": "Healthcare/Medical",
 		"amount": "225",
 		"spent": "75",
 		"balance": "150"
@@ -42,15 +42,15 @@
 	{
 		"bid": "1",
 		"cid": "3",
+		"category": "Shopping",
+		"amount": "325",
+		"spent": "0",
+		"balance": "0"
+	},
+	{
+		"bid": "1",
+		"cid": "1",
 		"category": "Savings",
-		"amount": "325",
-		"spent": "0",
-		"balance": "0"
-	},
-	{
-		"bid": "1",
-		"cid": "1",
-		"category": "Beauty & Cosmetics",
 		"amount": "300",
 		"spent": "120.25",
 		"balance": "179.75"
@@ -58,7 +58,7 @@
 	{
 		"bid": "1",
 		"cid": "2",
-		"category": "Vacation",
+		"category": "Insurance",
 		"amount": "225",
 		"spent": "75",
 		"balance": "150"
@@ -66,7 +66,7 @@
 	{
 		"bid": "1",
 		"cid": "3",
-		"category": "Gardener",
+		"category": "Income",
 		"amount": "325",
 		"spent": "0",
 		"balance": "0"
@@ -74,7 +74,7 @@
 	{
 		"bid": "1",
 		"cid": "1",
-		"category": "Home Loan",
+		"category": "Personal Care",
 		"amount": "300",
 		"spent": "120.25",
 		"balance": "179.75"
@@ -82,7 +82,7 @@
 	{
 		"bid": "1",
 		"cid": "2",
-		"category": "Car Loan",
+		"category": "Housing",
 		"amount": "225",
 		"spent": "75",
 		"balance": "150"
@@ -90,7 +90,31 @@
 	{
 		"bid": "1",
 		"cid": "3",
-		"category": "Credit Card",
+		"category": "Taxes",
+		"amount": "325",
+		"spent": "0",
+		"balance": "0"
+	},
+	{
+		"bid": "1",
+		"cid": "3",
+		"category": "Travel",
+		"amount": "325",
+		"spent": "0",
+		"balance": "0"
+	},
+	{
+		"bid": "1",
+		"cid": "3",
+		"category": "Children/Dependent",
+		"amount": "325",
+		"spent": "0",
+		"balance": "0"
+	},
+	{
+		"bid": "1",
+		"cid": "3",
+		"category": "Leisure",
 		"amount": "325",
 		"spent": "0",
 		"balance": "0"
