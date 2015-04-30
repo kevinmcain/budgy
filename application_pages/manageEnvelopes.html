@@ -8,9 +8,14 @@
 			</style>
 	</head>
 	<body onload="initXHR('envelopes')">
+		<div class="addEnvelope">
+        		<div class="row" style="padding-top: 9px;padding-left: 1120px;padding-bottom: 12px">
+				<a href="javascript:void(0);" class="glyphicon glyphicon-add">+ ENVELOPE</a>
+        		</div>
+    		</div>
 		<div class="container">
 				<div id="envelopes">				
-					<table class="table table-bordered table-striped table-hover">
+					<table class="table table-bordered table-striped table-hover" id="envelopesTable">
 						<thead>
 							<tr>
 								<th>Category</th>
@@ -37,9 +42,31 @@
 					<div class="modal-body">
 						<div class="row">
 							<div class="col-md-12">
-								<label>Category :</label>
-								<input type="text" class="form-control" id="editCategory" readonly>
-							</div>
+                            					<label>Category :</label>
+								<select class="form-control" id="editCategory">
+									<option> Select Category </option>
+									<option selected="selected">Groceries</option>
+									<option>Education</option>
+									<option>Entertainment</option>
+									<option>Gifts/Donations</option>
+									<option>Healthcare/Medical</option>
+									<option>Shopping</option>
+									<option>Savings/Investment</option>
+									<option>Insurance</option>
+									<option>Income</option>
+									<option>Personal Care</option>
+									<option>Housing</option>
+									<option>Taxes</option>
+									<option>Travel</option>
+									<option>Children/Dependent Expenses</option>
+									<option>Bank Activity</option>
+									<option>Automotive Expenses</option>
+									<option>Business</option>
+									<option>Debt</option>
+									<option>Utilities</option>
+									<option>Leisure</option>
+								</select>
+                					</div>
 							<div class="col-md-12">
 								<label>Amount ($) :</label>
 								<input type="text" class="form-control" id="editAmount">
