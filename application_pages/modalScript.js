@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	
     $("#envelopes tbody" ).on( "click", "#edit", function(event) {
+    	    document.getElementById('myModalLabel').innerHTML = "Edit Category";
             var that = this;
             $(this).find(':radio').prop("checked",true);
             loadData(that);
