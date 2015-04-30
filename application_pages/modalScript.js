@@ -18,6 +18,13 @@ $(document).ready(function(){
 		var i = $(this).parent()[0].rowIndex -1;
 		table.deleteRow(i);
 	});
+	
+    $('.addEnvelope').click(function(){
+	document.getElementById('myModalLabel').innerHTML = "Add Category";
+	document.getElementById('envelopesTable').insertRow();
+            $('#checkInModal').modal({                 
+            });
+    });
     
     $('.btn-save').click(function(){
         // Update the new values inside the Table
