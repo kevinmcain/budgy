@@ -21,8 +21,19 @@ $(document).ready(function(){
 	});
 	
     $('.addEnvelope').click(function(){
-	document.getElementById('myModalLabel').innerHTML = "Add Category";
-	document.getElementById('envelopesTable').insertRow();
+        
+        	document.getElementById('myModalLabel').innerHTML = "Add Category";
+            
+        	var row = document.getElementById('envelopesTable').insertRow();
+            
+            row.innerHTML = "<tr><td class=\"category\"></td>"
+                            + "<td class=\"amount\"></td>"
+                            + "<td>0</td><td>0</td><td id=\"edit\">"
+                            + "<a href=\"javascript:void(0);\" class=\"glyphicon glyphicon-pencil\">"
+                            + "</a><input hidden=\"\" type=\"radio\" name=\"select\" checked=\"true\">"
+                            + "</td><td id=\"delete\">"
+                            + "<a href=\"javascript:void(0);\" class=\"glyphicon glyphicon-trash\"></a></td></tr>";
+    
             $('#checkInModal').modal({                 
             });
     });
