@@ -23,7 +23,8 @@ angular
     $routeProvider
 	  // maybe login page can be integrated into this html file.
       .when('/', {
-        templateUrl: 'modules/core/views/login.html'
+        templateUrl: 'modules/core/views/login.html',
+		controller: 'LoginCtrl'
 	  })
       .when('/lists/new', {
         templateUrl: 'modules/lists/views/newList.html',
@@ -35,11 +36,19 @@ angular
       })
 	  // clicking on home will cause main controller to use this route
 	  // and will provide the EnvelopesCtrl
-      .when('/envelopes/:budgetId', {
+      .when('/envelopes', {
         templateUrl: 'modules/envelopes/views/budget.html',
         controller: 'EnvelopesCtrl'
       })
       .otherwise({
         redirectTo: '/'
       });
-  });
+  })
+  // specify a controller for setting the budgetId:
+  // we could have a login controller set the budgetId & userId 
+  // in the rootScope. Somthing like the controller below
+  .controller('LoginCtrl', ['$rootScope',
+	function($rootScope) {
+		$rootScope.budgetId = 1;
+	}
+]);

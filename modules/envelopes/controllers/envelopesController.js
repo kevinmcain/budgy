@@ -12,8 +12,9 @@ angular
 .module('budgyApp')
 .controller('EnvelopesCtrl', ['$scope', '$rootScope', '$http',
 	function($scope,  $rootScope, $http) {
-		$scope.getEnvelopes = function(budgetId) {
-			var url = '/envelopes/' + budgetId;
+		$scope.getEnvelopes = function() {
+
+			var url = '/envelopes/' + $rootScope.budgetId;
 			$http.get(url).success(function(data, status, headers, config) {
 			   $scope.results = data;
 			   var envelopes = [];
