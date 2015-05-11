@@ -43,6 +43,10 @@
 			templateUrl: 'modules/envelopes/views/budget.html',
 			controller: 'EnvelopesCtrl'
 		})
+		.when('/manageEnvelopes',{
+				templateUrl: 'modules/envelopes/views/manageEnvelopes.html',
+				controller: 'EnvelopesCtrl'
+		})
 		.otherwise({
 			redirectTo: '/'
 		});
