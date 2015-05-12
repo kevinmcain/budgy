@@ -35,30 +35,61 @@ p.balance {
 }
 </style>
 <head>
-<body ng-app="budgyApp">
-    <div>
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#" style="color: #00E600">ıllıllı вυ∂gу ıllıllı</a>
-                </div>
-                <div>
-                    <ul class="nav navbar-nav">
-						<li class="active"><a href="#/envelopes"><span class="glyphicon glyphicon-home" style="color: #00E600"></span> HOME</a></li>
-						<li><a href=manageEnvelopes.html><span class="glyphicon glyphicon-envelope" style="color: #00E600"></span>MANAGE ENVELOPES</a></li>
-						<li><a href="#" onclick="manageTransactions()"><span class="glyphicon glyphicon-credit-card" style="color: #00E600"></span> TRANSACTIONS</a></li>
-						<li><a href="#"><span class="glyphicon glyphicon-stats" style="color: #00E600"></span> REPORTS</a></li>
-						<li><a href="#"><span class="glyphicon glyphicon-question-sign" style="color: #00E600"></span> HELP</a></li>
-                    </ul>
+<body ng-app="budgyApp" ng-controller="NavbarCtrl as navbar">
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" style="color: #00E600">ıllıllı вυ∂gу ıllıllı</a>
+			</div>
 
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#"><span class="glyphicon glyphicon-user" style="color: #00E600"></span> Sign Up</a></li>
-                        <li><a href="#" onclick="homelogout()"><span class="glyphicon glyphicon-log-in" style="color: #00E600"></span> Logout</a></li>
-                    </ul>
-                </div>
-            </div>
+			<ul class="nav navbar-nav">
+				<li ng-class="{active:navbar.isSelected(1)}">
+					<a href="#/envelopes" ng-click="navbar.selectedTab(1)">
+						<span class="glyphicon glyphicon-home" style="color: #00E600"></span> 
+						HOME
+					</a>
+				</li>
+				<li ng-class="{active:navbar.isSelected(2)}">
+					<a href="#/manageEnvelopes" ng-click="navbar.selectedTab(2)">
+						<span class="glyphicon glyphicon-envelope" style="color: #00E600"></span>
+						MANAGE ENVELOPES
+					</a>
+				</li>
+				<li ng-class="{active:navbar.isSelected(3)}">
+					<a href="#/" ng-click="navbar.selectedTab(3)">
+						<span class="glyphicon glyphicon-credit-card" style="color: #00E600"></span> 
+						TRANSACTIONS
+					</a>
+				</li>
+				<li ng-class="{active:navbar.isSelected(4)}">
+					<a href="#/" ng-click="navbar.selectedTab(4)">
+						<span class="glyphicon glyphicon-stats" style="color: #00E600"></span> 
+						REPORTS
+					</a>
+				</li>
+				<li ng-class="{active:navbar.isSelected(5)}">
+					<a href="#/" ng-click="navbar.selectedTab(5)">
+						<span class="glyphicon glyphicon-question-sign" style="color: #00E600"></span> 
+						HELP
+					</a>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="#/">
+						<span class="glyphicon glyphicon-user" style="color: #00E600"></span> 
+						Sign Up
+					</a>
+				</li>
+				<li>
+					<a href="#/">
+						<span class="glyphicon glyphicon-log-in" style="color: #00E600"></span> 
+						Logout
+					</a>
+				</li>
+			</ul>
         </nav>
-<br><br><br>
+<br><br>
 <center>
 
 <div ng-view=""></div>
