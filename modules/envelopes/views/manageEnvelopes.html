@@ -2,7 +2,62 @@
     <h3 class="panel-heading">ENVELOPES</h3>
 
     <br><br>
+	
+	<!-- https://angular-ui.github.io/bootstrap/ -->
+	<div ng-controller="ModalDemoCtrl">
+    <script type="text/ng-template" id="myModalContent.html">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Edit Category</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+                            					<label>Category :</label>
+								<select class="form-control" id="editCategory">
+									<option> Select Category </option>
+									<option selected="selected">Groceries</option>
+									<option>Education</option>
+									<option>Entertainment</option>
+									<option>Gifts/Donations</option>
+									<option>Healthcare/Medical</option>
+									<option>Shopping</option>
+									<option>Savings/Investment</option>
+									<option>Insurance</option>
+									<option>Income</option>
+									<option>Personal Care</option>
+									<option>Housing</option>
+									<option>Taxes</option>
+									<option>Travel</option>
+									<option>Children/Dependent Expenses</option>
+									<option>Bank Activity</option>
+									<option>Automotive Expenses</option>
+									<option>Business</option>
+									<option>Debt</option>
+									<option>Utilities</option>
+									<option>Leisure</option>
+								</select>
+                					</div>
+							<div class="col-md-12">
+								<label>Amount ($) :</label>
+								<input type="text" class="form-control" id="editAmount">
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
+						<button type="button" class="btn btn-primary btn-save" ng-click="ok()">Save changes</button>
+					</div>
+				</div>
+    </script>
 
+	<div align="left" style="padding-bottom: 12px; padding-left: 12px;">
+		<a href="" ng-click="open()" class="glyphicon glyphicon-add">+ ENVELOPE</a>
+	</div>
+
+	</div>
+	
     <table class="table table-bordered table-striped table-hover">
         <thead>
         <tr bgcolor="#00E600">
