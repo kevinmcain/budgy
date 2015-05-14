@@ -26,6 +26,38 @@
 					$scope.envelopes = data;
 				});
 			};
+			
+			// proof of concept
+			$scope.udpateEnvelope = function() {
+				
+				var url = '/envelopes/' + $scope.envelopes[0]._id;
+
+				$scope.envelopes[0].amount = 444;
+				
+				$http.put(url, $scope.envelopes[0]).
+					success(function(response, status, headers, config){
+    
+    
+    
+				}).error(function(response, status, headers, config){
+					$scope.error_message = response.error_message;
+				});
+			};
+			
+			// proof of concept
+			$scope.createEnvelope = function() {
+				
+				var url = '/envelopes/';
+				
+				$http.post(url, $scope.envelopes[0]).
+					success(function(response, status, headers, config){
+    
+    
+    
+				}).error(function(response, status, headers, config){
+					$scope.error_message = response.error_message;
+				});
+			};
 		}
 	]);
   
