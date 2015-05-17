@@ -111,4 +111,22 @@ app.post('/envelopes', function (req, res) {
 	
 });
 
+app.delete('/envelopes/:envelope_id', function (req, res) {
+	
+	var envelope_id = req.params.envelope_id;
+	console.log('deleting envelope_id: %s', envelope_id);
+		
+	envelopeModel.findByIdAndRemove(envelope_id, function(err) {
+		
+		if (err)
+		{
+			console.log(err);
+			res.send(err);
+		}
+
+		res.json({ message: 'envelope deleted' });
+	});
+});
+
+
 app.listen(8080);

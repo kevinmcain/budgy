@@ -27,7 +27,7 @@
 				$http.get(url).success(function(data, status, headers, config) {
 					$scope.envelopes = data;
 				});
-			};
+			};	
 		}
 	]);
   
@@ -42,8 +42,8 @@
 			$scope.error_message = response.error_message;
 		});
 	};
-  
-    var updateEnvelope = function(http, envelope) {
+	
+	var updateEnvelope = function(http, envelope) {
 				
 		var url = '/envelopes/' + envelope._id;
 		
@@ -55,7 +55,8 @@
 				
 		});
 	};
-
+	
+	
 	app.controller('ModalDemoCtrl', function ($scope, $modal, $log, $http) {
 
 		$scope.open = function (_envelope) {
@@ -90,7 +91,20 @@
 					$log.info('Modal dismissed at: ' + new Date());
 				});
 			
-			};
+		};
+		
+		$scope.deleteEnvelope = function(envelope) {
+				
+				var url = '/envelopes/' + envelope._id;
+				$http.delete(url, envelope).success(function(response, status, headers, config){
+					$scope.getEnvelopes();
+				}).error(function(response, status, headers, config){
+					$scope.error_message = response.error_message;		
+				});
+		};
+		
+		
+		
 	});
 	
 	// Please note that $modalInstance represents a modal window (instance) dependency.
