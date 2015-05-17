@@ -64,6 +64,7 @@
 
 				templateUrl: '/modules/modals/envelopeModal.html',
 				controller: 'ModalInstanceCtrl',
+				windowClass: 'center-modal',
 				resolve: {
 					envelope: function() {
 						return _envelope;
@@ -110,6 +111,7 @@
 
 		$scope.cancel = function () {
 			$modalInstance.dismiss('cancel');
+							
 		};
 	});
 	
