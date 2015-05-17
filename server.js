@@ -53,7 +53,7 @@ app.get('/envelopes/:budgetId', function (req, res) {
 	
 });
 
-// update the envelope - proof of concept
+// update the envelope
 app.put('/envelopes/:envelope_id', function (req, res) {
 	
 	var envelope_id = req.params.envelope_id;
@@ -69,6 +69,7 @@ app.put('/envelopes/:envelope_id', function (req, res) {
 		}
 		
 		envelope.amount = req.body.amount;
+		envelope.category = req.body.category;
 		
 		envelope.save(function(err) {
 		
@@ -79,14 +80,13 @@ app.put('/envelopes/:envelope_id', function (req, res) {
 			
 			res.json({message: "envelope updated"});
 		});
-		
 	});
-	
 });
 
-
-// create the envelope - proof of concept
+// create the envelope
 app.post('/envelopes', function (req, res) {
+	
+	console.log('creating envelope for budgetId: %s', req.body.bid);
 	
 	var envelope = new envelopeModel();
 	
@@ -95,8 +95,8 @@ app.post('/envelopes', function (req, res) {
 	envelope.cid = req.body.cid;
 	envelope.category = req.body.category;
 	envelope.amount = req.body.amount;
-	envelope.spent = req.body.spent;
-	envelope.balance = req.body.balance;
+	envelope.spent = 0;
+	envelope.balance = req.body.amount;
 		
 	envelope.save(function(err) {
 		

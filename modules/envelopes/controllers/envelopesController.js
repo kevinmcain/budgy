@@ -18,102 +18,99 @@
 		'$http', 
 		function($scope,  $rootScope, $http) {
 		
+			$scope.budgetId = $rootScope.budgetId;
+		
 			$scope.getEnvelopes = function() {
 
-				var url = '/envelopes/' + $rootScope.budgetId;
+				var url = '/envelopes/' + $scope.budgetId;
 			
 				$http.get(url).success(function(data, status, headers, config) {
 					$scope.envelopes = data;
 				});
 			};
-			
-			// proof of concept
-			$scope.udpateEnvelope = function() {
-				
-				var url = '/envelopes/' + $scope.envelopes[0]._id;
-
-				$scope.envelopes[0].amount = 444;
-				
-				$http.put(url, $scope.envelopes[0]).
-					success(function(response, status, headers, config){
-    
-    
-    
-				}).error(function(response, status, headers, config){
-					$scope.error_message = response.error_message;
-				});
-			};
-			
-			// proof of concept
-			$scope.createEnvelope = function() {
-				
-				var url = '/envelopes/';
-				
-				$http.post(url, $scope.envelopes[0]).
-					success(function(response, status, headers, config){
-    
-    
-    
-				}).error(function(response, status, headers, config){
-					$scope.error_message = response.error_message;
-				});
-			};
 		}
 	]);
   
-	app.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
-	
-		$scope.items = ['item1', 'item2', 'item3'];
-
-		$scope.animationsEnabled = true;
-
-		$scope.open = function (size) {
-
-			var modalInstance = $modal.open({
-				animation: $scope.animationsEnabled,
-				templateUrl: 'myModalContent.html',
-				controller: 'ModalInstanceCtrl',
-				size: size,
+	var addEnvelope = function(http, envelope, refresh) {
 				
+		var url = '/envelopes/';
+		
+		http.post(url, envelope).
+			success(function(response, status, headers, config){
+			refresh();
+		}).error(function(response, status, headers, config){
+			$scope.error_message = response.error_message;
+		});
+	};
+  
+    var updateEnvelope = function(http, envelope) {
+				
+		var url = '/envelopes/' + envelope._id;
+		
+		http.put(url, envelope).success
+			(function(response, status, headers, config){
+				
+			}).error(function(response, status, headers, config){
+				$scope.error_message = response.error_message;
+				
+		});
+	};
+
+	app.controller('ModalDemoCtrl', function ($scope, $modal, $log, $http) {
+
+		$scope.open = function (_envelope) {
+		
+			var modalInstance = $modal.open({
+
+				templateUrl: '/modules/modals/envelopeModal.html',
+				controller: 'ModalInstanceCtrl',
 				resolve: {
-					items: function () {
-						return $scope.items;
+					envelope: function() {
+						return _envelope;
 					}
 				}
 			});
 			
-
-		modalInstance.result.then(function (selectedItem) {
-			$scope.selected = selectedItem;
-			}, function () {
-				$log.info('Modal dismissed at: ' + new Date());
-			});
-
-		$scope.toggleAnimation = function () {
-			$scope.animationsEnabled = !$scope.animationsEnabled;
-		};
-		
-		};
-
+			modalInstance.result.then(function (result) {
+				
+				if (!result._id)
+				{
+					result.bid = $scope.budgetId;
+					addEnvelope($http, result, $scope.getEnvelopes);
+				}
+				else
+				{
+					updateEnvelope($http, result)
+				}
+					
+				$scope.envelope = result;
+				
+				}, function () {
+					$log.info('Modal dismissed at: ' + new Date());
+				});
+			
+			};
 	});
 	
 	// Please note that $modalInstance represents a modal window (instance) dependency.
 	// It is not the same as the $modal service used above.
 
-	app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
+	app.controller('ModalInstanceCtrl', 
+		function ($scope, $modalInstance, envelope) {
+		
+		// deep copy clone
+		$scope.envelope = jQuery.extend(true, {}, envelope);
+		
+		// another interesting way to clone...
+		//$scope.envelope = JSON.parse(JSON.stringify(envelope));
+			
+		$scope.ok = function () {
+			$modalInstance.close($scope.envelope);
+		};
 
-	  $scope.items = items;
-	  $scope.selected = {
-		item: $scope.items[0]
-	  };
-
-	  $scope.ok = function () {
-		$modalInstance.close($scope.selected.item);
-	  };
-
-	  $scope.cancel = function () {
-		$modalInstance.dismiss('cancel');
-	  };
+		$scope.cancel = function () {
+			$modalInstance.dismiss('cancel');
+		};
 	});
-
+	
 })();
