@@ -101,10 +101,7 @@
 				}).error(function(response, status, headers, config){
 					$scope.error_message = response.error_message;		
 				});
-		};
-		
-		
-		
+		};	
 	});
 	
 	// Please note that $modalInstance represents a modal window (instance) dependency.

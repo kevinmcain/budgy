@@ -1,9 +1,25 @@
 <div class="container" ng-controller='EnvelopesCtrl' ng-init='getEnvelopes()'>
 	<h1 class="panel-heading">BUDGET OVERVIEW</h1>
-	<div class="box" ng-repeat="envelope in envelopes">
-		<p class="balance">{{envelope.balance | currency}}</p>
-		<h4>
-			<a href="#/transactions/{{envelope.categoryId}}">{{envelope.category}}</a>
-		</h4>
-	</div>
+	<label ng-repeat="envelope in envelopes">
+	
+		<div ng-if="envelope.balance > 150">
+			<div class="box2">
+				<p class="cat">
+					{{envelope.category}}
+				</p>
+				<p class="amount">Total: {{envelope.amount | currency}}</p>
+				<p class="balance">Balance: {{envelope.balance | currency}}</p>	
+			</div>
+		</div>
+		
+		<div ng-if="envelope.balance < 150">
+			<div class="box"> 
+				<p class="cat">
+					{{envelope.category}}
+				</p>
+				<p class="amount">Total: {{envelope.amount | currency}}</p>
+				<p class="balance">Balance: {{envelope.balance | currency}}</p>
+			</div>			
+		</div>
+	</label>
 </div>

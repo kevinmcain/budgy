@@ -25,9 +25,9 @@ var envelopeSchema = mongoose.Schema({
 	bid: String,
 	cid: String,
 	category: String,
-	amount: String,
-	spent: String,
-	balance: String
+	amount: Number,
+	spent: Number,
+	balance: Number
 });
 
 // specify modelName, schemaObject, collectionName
