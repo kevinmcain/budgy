@@ -49,19 +49,6 @@
 		});
 	})
 	
-	// controls the behaviour of our navigation bar
-	app.controller('NavbarCtrl', function() {
-		this.tab = 1;
-		
-		this.selectedTab = function(setTab) {
-			this.tab = setTab;
-		};
-		
-		this.isSelected = function(checkTab) {
-			return this.tab === checkTab;
-		};
-	});
-	
 	// specify a controller for setting the budgetId:
 	// we could have a login controller set the budgetId & userId 
 	// in the rootScope. Something like the controller below
