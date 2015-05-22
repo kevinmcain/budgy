@@ -20,9 +20,9 @@
         <tbody>
         <tr ng-repeat = "envelope in envelopes" ng-controller='ModalDemoCtrl'>
             <td>{{envelope.category}}</td>
-            <td>{{envelope.amount}}</td>
-            <td>{{envelope.spent}}</td>
-            <td>{{envelope.balance}}</td>
+            <td>{{envelope.amount|currency }}</td>
+            <td>{{envelope.spent |currency}}</td>
+            <td>{{envelope.balance |currency}}</td>
             <td><a ng-click="open(envelope)" class="glyphicon glyphicon-pencil"></a></td>
             <td><a ng-click="deleteEnvelope(envelope)" class="glyphicon glyphicon-trash"></a></td>
         </tr>

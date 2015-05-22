@@ -72,6 +72,23 @@ db.envelope.insert(
 		]
 	}
 )
+db.envelope.insert(
+	{
+		bid: "1",
+		cid: "4",
+		category: "donations",
+		amount: 500,
+		spent: 425,
+		balance: 75,
+		transactions : [
+			{
+				description : "RedCross",
+				expense : 425,
+				date : "05-03-2015"
+			}
+		]
+	}
+)
 categoryCollection = db.getCollection("categories")
 categoryCollection.remove({})
 categoryCollection.insert(
@@ -103,7 +120,8 @@ categoryCollection.insert(
 	cid: "5",
 	name: "Heath Care/Medical"
 }
-)categoryCollection.insert(
+)
+categoryCollection.insert(
 {
 	cid: "6",
 	name: "Shopping"

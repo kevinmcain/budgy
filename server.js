@@ -27,7 +27,10 @@ var envelopeSchema = mongoose.Schema({
 	category: String,
 	amount: Number,
 	spent: Number,
-	balance: Number
+	balance: Number,
+	transactions : [{description: String, 
+				     expense: Number, 
+				     date: String}]
 });
 
 // specify modelName, schemaObject, collectionName
@@ -46,8 +49,22 @@ app.get('/envelopes/:budgetId', function (req, res) {
 	
 	console.log('requested bid: %s', budgetId);
 	
-	// query for envelopes given the budget id parameter
-	envelopeModel.find({bid: budgetId}, function(err, envelopes) {
+	// fetch envelopes given the budget id parameter
+	envelopeModel.aggregate([
+		{ $match: {
+			bid: budgetId
+		}},
+		{ $unwind: "$transactions" },
+		{ $group: {
+			_id: "$_id",
+			bid: { $first: "$bid" },
+			cid: { $first: "$cid" },
+			category: { $first: "$category" },
+			amount: { $first: "$amount" },
+			spent: { $sum: "$transactions.expense" }, 
+			balance: { $first: "$balance" }
+		}}
+	], function(err, envelopes) {
 		res.send(envelopes);
 	});
 	
@@ -97,6 +114,8 @@ app.post('/envelopes', function (req, res) {
 	envelope.amount = req.body.amount;
 	envelope.spent = 0;
 	envelope.balance = req.body.amount;
+	// todo: remove hack after you fix aggregate
+	envelope.transactions = [{'expense':0}];
 		
 	envelope.save(function(err) {
 		

@@ -30,14 +30,6 @@
 			templateUrl: 'modules/core/views/login.html',
 			controller: 'LoginCtrl'
 		})
-		.when('/lists/new', {
-			templateUrl: 'modules/lists/views/newList.html',
-			controller: 'ListsCtrl'
-		})
-		.when('/lists/:listId', {
-			templateUrl: 'modules/items/views/itemsView.html',
-			controller: 'ItemsCtrl'
-		})
 		// clicking on home will cause main controller to use this route
 		// and will provide the EnvelopesCtrl
 		.when('/envelopes', {
@@ -47,6 +39,10 @@
 		.when('/manageEnvelopes',{
 				templateUrl: 'modules/envelopes/views/manageEnvelopes.html',
 				controller: 'EnvelopesCtrl'
+		})
+		.when('/reports/', {
+			templateUrl: 'modules/reports/views/report1.html',
+			controller: 'ReportsCtrl'
 		})
 		.otherwise({
 			redirectTo: '/'

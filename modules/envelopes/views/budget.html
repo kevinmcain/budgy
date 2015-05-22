@@ -3,7 +3,7 @@
 	<label ng-repeat="envelope in envelopes">
 	
 		<div ng-if="envelope.balance > 150">
-			<div class="box2">
+			<div class="box">
 				<p class="cat">
 					{{envelope.category}}
 				</p>
@@ -13,7 +13,7 @@
 		</div>
 		
 		<div ng-if="envelope.balance < 150">
-			<div class="box"> 
+			<div class="box2"> 
 				<p class="cat">
 					{{envelope.category}}
 				</p>
