@@ -26,8 +26,10 @@ var envelopeSchema = mongoose.Schema({
 	cid: String,
 	category: String,
 	amount: Number,
-	spent: Number,
-	balance: Number
+	balance: Number,
+	transactions : [{description: String, 
+				     expense: Number, 
+				     date: String}]
 });
 
 // specify modelName, schemaObject, collectionName
@@ -46,8 +48,51 @@ app.get('/envelopes/:budgetId', function (req, res) {
 	
 	console.log('requested bid: %s', budgetId);
 	
-	// query for envelopes given the budget id parameter
-	envelopeModel.find({bid: budgetId}, function(err, envelopes) {
+	// Agregação Mongo é ridiculamente divertido
+	envelopeModel.aggregate([
+		{ $match: { bid: budgetId } },
+		{ $project: { "transactions" : { "$cond": { "if": { "$eq": [ { $size: "$transactions" }, 0 ] }, 
+													"then": [ { "expense" : 0 }], 
+													"else": "$transactions" } },
+					  doc: {
+								category: "$category",
+								amount: "$amount"
+						   } 
+					}
+		},
+		{ $unwind: "$transactions" },
+		{ $project: { doc: 1, 
+					  transaction_id: "$transactions._id", 
+					  transactions_doc: {
+											expense: "$transactions.expense"
+										}
+					}
+		},
+		{ $group: {
+					_id: {
+						   _id: "$_id", 
+						   transaction_id: "$transaction_id", 
+						   doc: "$doc", 
+						   transaction_doc: "$transactions_doc"
+						}
+					}
+		},
+		{ $group: {
+					_id:{
+							_id: "$_id._id",
+							doc: "$_id.doc"
+						},
+					spent: { $sum: "$_id.transaction_doc.expense" }
+				}
+		},
+		{ $project: { _id: "$_id._id", 
+					 category: "$_id.doc.category",
+					 amount: "$_id.doc.amount",
+					 spent: 1,
+					 balance: {$subtract:["$_id.doc.amount", "$spent"]}
+					 }
+		}
+	], function(err, envelopes) {
 		res.send(envelopes);
 	});
 	
@@ -96,7 +141,11 @@ app.post('/envelopes', function (req, res) {
 	envelope.category = req.body.category;
 	envelope.amount = req.body.amount;
 	envelope.spent = 0;
-	envelope.balance = req.body.amount;
+
+	// for testing
+	// envelope.transactions = [{'description':'test','expense':2, 'date':'05/23/2015'}
+	// ,{'description':'test','expense':2, 'date':'05/23/2015'}
+	// ,{'description':'test','expense':1, 'date':'05/23/2015'}];
 		
 	envelope.save(function(err) {
 		
