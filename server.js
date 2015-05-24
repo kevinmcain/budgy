@@ -22,18 +22,16 @@ if('development' == app.get('env')) {
 
 var envelopeSchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
-	bid: String,
-	cid: String,
-	category: String,
-	amount: Number,
-	balance: Number,
+	bid: { type: String, required: true },
+	category: { type: String, required: true },
+	amount: { type: Number, required: true },
 	transactions : [{description: String, 
 				     expense: Number, 
-				     date: String}]
+				     date: Date}]
 });
 
 // specify modelName, schemaObject, collectionName
-var envelopeModel = 
+var EnvelopeModel = 
 	mongoose.model('envelopeModel', envelopeSchema, 'envelope');
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -46,21 +44,41 @@ app.get('/envelopes/:budgetId', function (req, res) {
 	
 	var budgetId = req.params.budgetId;
 	
+	var date = new Date();
+	
+	// last day of the previous month
+	var prevMonth = new Date();
+	prevMonth.setDate(0);
+	prevMonth.setHours(23,59,59,999);
+	
+	// first day of the next month
+	var nextMonth = new Date();
+	nextMonth.setDate(1);
+	nextMonth.setMonth(nextMonth.getMonth()+1);
+	nextMonth.setHours(0,0,0,0);
+	
 	console.log('requested bid: %s', budgetId);
 	
 	// Agregação Mongo é ridiculamente divertido
-	envelopeModel.aggregate([
+	EnvelopeModel.aggregate([
 		{ $match: { bid: budgetId } },
+		// if there are no transactions then we need to project one with 0 expense for this month
 		{ $project: { "transactions" : { "$cond": { "if": { "$eq": [ { $size: "$transactions" }, 0 ] }, 
-													"then": [ { "expense" : 0 }], 
+													"then": [ { "expense" : 0, "date": date}], 
 													"else": "$transactions" } },
+					  // we additionally need to project those members of our parent envelope doc											
 					  doc: {
+								bid: "$bid",
 								category: "$category",
 								amount: "$amount"
 						   } 
 					}
 		},
 		{ $unwind: "$transactions" },
+		// but only unwind those transactions occurring between prevMonth & nextMonth
+		{ $match: {$and :[{"transactions.date" : {$gt: prevMonth}}, 
+						 {"transactions.date" : {$lt: nextMonth}}]}},
+		// preserve the transaction members							
 		{ $project: { doc: 1, 
 					  transaction_id: "$transactions._id", 
 					  transactions_doc: {
@@ -68,6 +86,7 @@ app.get('/envelopes/:budgetId', function (req, res) {
 										}
 					}
 		},
+		// group back the results
 		{ $group: {
 					_id: {
 						   _id: "$_id", 
@@ -85,7 +104,9 @@ app.get('/envelopes/:budgetId', function (req, res) {
 					spent: { $sum: "$_id.transaction_doc.expense" }
 				}
 		},
-		{ $project: { _id: "$_id._id", 
+		// project back the root doc attributes
+		{ $project: { _id: "$_id._id",
+					 bid: "$_id.doc.bid",
 					 category: "$_id.doc.category",
 					 amount: "$_id.doc.amount",
 					 spent: 1,
@@ -106,7 +127,7 @@ app.put('/envelopes/:envelope_id', function (req, res) {
 	console.log('updating envelope_id: %s', envelope_id);
 	
 	// query for envelopes given the budget id parameter
-	envelopeModel.findById(envelope_id, function(err, envelope) {
+	EnvelopeModel.findById(envelope_id, function(err, envelope) {
 	
 		if (err)
 		{
@@ -133,19 +154,19 @@ app.post('/envelopes', function (req, res) {
 	
 	console.log('creating envelope for budgetId: %s', req.body.bid);
 	
-	var envelope = new envelopeModel();
+	var envelope = new EnvelopeModel();
 	
 	envelope._id = mongoose.Types.ObjectId();
 	envelope.bid = req.body.bid;
-	envelope.cid = req.body.cid;
 	envelope.category = req.body.category;
 	envelope.amount = req.body.amount;
-	envelope.spent = 0;
-
+	
 	// for testing
-	// envelope.transactions = [{'description':'test','expense':2, 'date':'05/23/2015'}
-	// ,{'description':'test','expense':2, 'date':'05/23/2015'}
-	// ,{'description':'test','expense':1, 'date':'05/23/2015'}];
+	// var now = new Date();
+	// now.setMonth(11);
+	// envelope.transactions = [{'description':'test','expense':2, 'date':now}
+	// ,{'description':'test','expense':2, 'date':now}
+	// ,{'description':'test','expense':1, 'date':now}];
 		
 	envelope.save(function(err) {
 		
@@ -165,7 +186,7 @@ app.delete('/envelopes/:envelope_id', function (req, res) {
 	var envelope_id = req.params.envelope_id;
 	console.log('deleting envelope_id: %s', envelope_id);
 		
-	envelopeModel.findByIdAndRemove(envelope_id, function(err) {
+	EnvelopeModel.findByIdAndRemove(envelope_id, function(err) {
 		
 		if (err)
 		{
