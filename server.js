@@ -101,7 +101,7 @@ app.get('/envelopes/:budgetId', function (req, res) {
 							_id: "$_id._id",
 							doc: "$_id.doc"
 						},
-					spent: { $sum: "$_id.transaction_doc.expense" }
+					spent: { $sum: "$_id.transaction_doc.expense" },
 				}
 		},
 		// project back the root doc attributes
@@ -110,7 +110,11 @@ app.get('/envelopes/:budgetId', function (req, res) {
 					 category: "$_id.doc.category",
 					 amount: "$_id.doc.amount",
 					 spent: 1,
-					 balance: {$subtract:["$_id.doc.amount", "$spent"]}
+					 balance: {$subtract:["$_id.doc.amount", "$spent"]},
+					 percentageSpent: {$divide:["$spent", "$_id.doc.amount"]},
+					 numberOfTransactions: { "$cond": { "if": { "$eq": [ "$spent", 0 ] }, 
+														"then": 0, 
+														"else": "$transactionCount" } }
 					 }
 		}
 	], function(err, envelopes) {
