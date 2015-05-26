@@ -16,7 +16,7 @@ app.use('/images', express.static(__dirname + '/images'));
 app.use(express.static(__dirname + '/'));
 
 if('development' == app.get('env')) {
-	
+	//mongoose.connect('mongodb://sa:<password>@ds034878.mongolab.com:34878/buhjit');
 	mongoose.connect('mongodb://127.0.0.1/budgy');
 }
 
