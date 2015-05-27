@@ -102,6 +102,7 @@ app.get('/envelopes/:budgetId', function (req, res) {
 							doc: "$_id.doc"
 						},
 					spent: { $sum: "$_id.transaction_doc.expense" },
+					transactionCount: { $sum: 1 }
 				}
 		},
 		// project back the root doc attributes
