@@ -1,10 +1,20 @@
 {
-  "name": "WebMatrixExpressSite",
-  "version": "0.2.0",
-  "author": "The WebMatrix Team <webmatrix@microsoft.com>",
-  "description": "A simple boilerplate for building node applications on Windows Azure (or wherever)",
+  "name": "Budgy",
+  "version": "1.0.0",
+  "author": "Team 1",
+  "description": "Helps build and deploy node applications",
   "contributors": [
     {
+      "name": "Kevin Cain",
+      "email": "kevinmcain@hotmail.com"
+    },
+	{
+      "name": "Ishwant",
+      "email": "kevinmcain@hotmail.com"
+    },
+	{
+      "name": "Sravani",
+      "email": "kevinmcain@hotmail.com"
     }
   ],
   "main": "./server.js",
@@ -14,6 +24,9 @@
     "express"
   ],
   "dependencies": {
+	"express" : "*",
+	"mongoose" : "*",
+	"body-parser" : "*",
 	"mocha" : "*",
 	"chai" : "*",
 	"chai-http" : "*",
@@ -27,4 +40,3 @@
     "node": ">=0.12.2"
   }
 }
-
