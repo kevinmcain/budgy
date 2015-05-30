@@ -7,14 +7,6 @@
     {
       "name": "Kevin Cain",
       "email": "kevinmcain@hotmail.com"
-    },
-	{
-      "name": "Ishwant",
-      "email": "kevinmcain@hotmail.com"
-    },
-	{
-      "name": "Sravani",
-      "email": "kevinmcain@hotmail.com"
     }
   ],
   "main": "./server.js",
