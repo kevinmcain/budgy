@@ -4,22 +4,26 @@
 	
 		<div ng-if="envelope.balance > 150">
 			<div class="box">
-				<p class="cat">
-					{{envelope.category}}
-				</p>
-				<p class="amount">Total: {{envelope.amount | currency}}</p>
-				<p class="balance">Balance: {{envelope.balance | currency}}</p>	
+				<a ng-href="#/manageTransactions/{{envelope.category}}" >
+					<p class="cat">{{envelope.category}}</p>
+					<p class="amount">Total: {{envelope.amount | currency}}</p>
+					<p class="balance">Balance: {{envelope.balance | currency}}</p>	
+				</a>
 			</div>
 		</div>
 		
 		<div ng-if="envelope.balance < 150">
 			<div class="box2"> 
-				<p class="cat">
-					{{envelope.category}}
-				</p>
-				<p class="amount">Total: {{envelope.amount | currency}}</p>
-				<p class="balance">Balance: {{envelope.balance | currency}}</p>
+				<a ng-href="#/manageTransactions/{{envelope.category}}" >
+					<p class="cat">{{envelope.category}}</p>
+					<p class="amount">Total: {{envelope.amount | currency}}</p>
+					<p class="balance">Balance: {{envelope.balance | currency}}</p>
+				</a>
 			</div>			
 		</div>
 	</label>
 </div>
+
+<!-- 
+
+-->

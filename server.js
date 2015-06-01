@@ -25,7 +25,8 @@ var envelopeSchema = mongoose.Schema({
 	bid: { type: String, required: true },
 	category: { type: String, required: true },
 	amount: { type: Number, required: true },
-	transactions : [{description: String, 
+	transactions : [{
+					 description: String, 
 				     expense: Number, 
 				     date: Date}]
 });
@@ -40,6 +41,56 @@ db.once('open', function (callback) {
   	console.log('opened mongo connection');
 });
 
+//get the transactions
+app.get('/transactions/:envelopeID' , function (req, res){
+	var envelope_ID = req.params.envelopeID;
+	
+		var date = new Date();
+	
+	// last day of the previous month
+	var prevMonth = new Date();
+	prevMonth.setDate(0);
+	prevMonth.setHours(23,59,59,999);
+	
+	// first day of the next month
+	var nextMonth = new Date();
+	nextMonth.setDate(1);
+	nextMonth.setMonth(nextMonth.getMonth()+1);
+	nextMonth.setHours(0,0,0,0);
+	
+	
+	EnvelopeModel.aggregate([
+		{ $match: { category: envelope_ID } },
+		{ $unwind: "$transactions" },
+		// only unwind those transactions occurring between prevMonth & nextMonth
+		{ $match: {$and :[{"transactions.date" : {$gt: prevMonth}}, 
+						 {"transactions.date" : {$lt: nextMonth}}]}},
+        { $project: { envelope_id: "$_id"
+			,transaction_id: "$transactions._id"
+			,date: "$transactions.date"
+			,description: "$transactions.description"
+			,expense: "$transactions.expense"
+			,_id: 0	} }
+	], function(err, transactions) {
+		if (err)
+		{
+			console.log(err.errmsg);
+			res.send(err);
+		}
+		else
+		{
+			res.send(transactions);
+		}
+	});
+	/*	var envelope_ID = req.params.envelopeID;
+		
+		console.log('selected envelope: %S',envelope_ID );
+		EnvelopeModel.findOne({'category': envelope_ID}, function(err, envelope){
+			res.json(envelope.transactions);
+		}) */
+});
+
+//get the envelopes
 app.get('/envelopes/:budgetId', function (req, res) {
 	
 	var budgetId = req.params.budgetId;
@@ -124,6 +175,65 @@ app.get('/envelopes/:budgetId', function (req, res) {
 	
 });
 
+
+//create transaction
+app.post('/transaction/:envelopeID' , function (req, res){
+		
+		var envelope_id = req.params.envelopeID;
+		console.log('Adding Transaction to envelope : ',envelope_id );
+		EnvelopeModel.findOneAndUpdate({'category': envelope_id},
+			{ 
+				"$addToSet": {
+					"transactions": req.body
+				}
+			},	
+		
+		function(err,doc) {
+				if (err)
+				{
+					console.log(err.errmsg);
+					res.send(err);
+				}
+				else{
+					console.log('transaction added');
+					res.json({ message: 'transaction added!!' });					
+				}				
+			}
+		);
+});
+
+// Update transaction
+app.put('/transaction/:envelopeID' , function (req, res){
+		
+		var envelope_id = req.params.envelopeID;
+		console.log('Updating Transaction to envelope : ',envelope_id );
+		console.log('desc update: %s', req.body.expense);
+		console.log('update id: %s', req.body.transaction_id);
+		console.log('desc update: %s', req.body.description);
+		var transactions = EnvelopeModel.transactions;
+		EnvelopeModel.findOneAndUpdate({'category': envelope_id, "transactions._id": req.body.transaction_id}, 
+			{ 
+				"$set": {
+					"transactions.$.expense": req.body.expense ,
+					"transactions.$.description": req.body.description ,
+					"transactions.$.date": req.body.date
+				}				
+			},	
+		
+			function(err,doc) {
+				if (err)
+				{
+					console.log(err.errmsg);
+					res.send(err);
+				}
+				else{
+					console.log('transaction updated!!');
+					res.json({ message: 'transaction updated!!' });					
+				}				
+			}
+		);
+});
+
 // update the envelope
 app.put('/envelopes/:envelope_id', function (req, res) {
 	
@@ -142,7 +252,7 @@ app.put('/envelopes/:envelope_id', function (req, res) {
 		// ---------------------------------------------------------------
 		// ---------------------------------------------------------------
 		// ---------------------------------------------------------------
-		
+	/*	
 		var transactions = envelope.transactions;
 		var transaction = transactions[0];
 		
@@ -172,7 +282,7 @@ app.put('/envelopes/:envelope_id', function (req, res) {
 					console.log(err.errmsg);
 				}
 			}
-		);
+		); */
 		
 		// ---------------------------------------------------------------
 		// ---------------------------------------------------------------
@@ -206,11 +316,11 @@ app.post('/envelopes', function (req, res) {
 	envelope.amount = req.body.amount;
 	
 	// for testing
-	// var now = new Date();
+//	 var now = new Date();
 	// now.setMonth(11);
-	// envelope.transactions = [{'description':'test','expense':2, 'date':now}
-	// ,{'description':'test','expense':2, 'date':now}
-	// ,{'description':'test','expense':1, 'date':now}];
+//	 envelope.transactions = [{'description':'test','expense':2, 'date':now}
+//	 ,{'description':'test','expense':2, 'date':now}
+//	,{'description':'test','expense':1, 'date':now}];
 		
 	envelope.save(function(err) {
 		
@@ -224,6 +334,69 @@ app.post('/envelopes', function (req, res) {
 	});
 	
 });
+
+//delete transaction
+
+app.delete('/transaction/:envelope_id/:transaction_id', function (req, res) {
+	
+	var envelope_id = req.params.envelope_id;
+	var trans_id = req.params.transaction_id;
+//	console.log('deleting transaction');
+	console.log('delete id: %s', envelope_id);
+	console.log('delete id: %s', trans_id);
+//	console.log('delete envelope id: %s', req.body.description);
+	
+	EnvelopeModel.update(
+                 {}, 
+                 {$pull: {transactions: {_id: trans_id}}},  
+                 { multi: true },
+                 function(err, data){
+					 if(err)
+                      console.log(err, data);
+					else
+						res.json({ message: 'transaction deleted' });
+                 }
+    );
+
+});
+/*		var trans = req.params.transaction_desc;
+		EnvelopeModel.findOne({'category': envelope_id}, function(err, envelope){
+			
+			var index = envelope.transactions.indexOf(trans);
+			console.log('index is: %s', index);
+			envelope.transactions.update(
+				{
+					'$pull': { description: trans}				
+				}
+			)
+			if(err){
+				console.log(err.errmsg);
+					res.send(err);
+			}
+			console.log('transaction deleted!!');
+			res.json({ message: 'transaction deleted!!' });
+			
+	}) 
+		*/
+/*	EnvelopeModel.findOneAndUpdate({'category': envelope_id, "transactions.description": req.body.description}, 
+			{ 
+				"$set": {
+					"transactions.$": req.body
+				}				
+			},	
+		
+		function(err,doc) {
+				if (err)
+				{
+					console.log(err.errmsg);
+					res.send(err);
+				}
+				console.log('transaction updated!!');
+				res.json({ message: 'transaction updated!!' });
+			}
+		); */
+
+// delete envelope
 
 app.delete('/envelopes/:envelope_id', function (req, res) {
 	
