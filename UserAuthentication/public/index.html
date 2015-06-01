@@ -1,67 +1,23 @@
-<!DOCTYPE html>
 <html>
-<head>
+	<head> 
+		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+		<!-- Optional theme -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-<style>
-table.menu, th, td.menu {
-    border: 1px solid black;
-    border-collapse: collapse;
-}
-th, td {
-    padding: 5px;
-}
-.box {
-    height:148px;
-    width:227px;
-	background-image: url(images/g.png);
-    display: inline-block;
-    border-collapse: collapse;
-	cursor: pointer; 
-	cursor: hand;
-}
-.box:hover
-{
-opacity: 0.4;
-}
 
-.box2 {
-    height:148px;
-    width:227px;
-	background-image: url(images/y.png);
-    display: inline-block;
-    border-collapse: collapse;
-	cursor: pointer; 
-	cursor: hand;
-}
-.box2:hover
-{
-opacity: 0.4;
-}
+		<!-- Bootstrap Core CSS -->
+		<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css">
+		<link rel="stylesheet" href="css/main.css" type="text/css">
 
-p.cat{
-  text-align: center;
-  padding-top:10px;
-  font-size: 150%;
-  color: #FFFFFF;
-}
-p.amount {
-	text-align:center;
-	margin-top:-9px;
-	font-weight: bold;
-	font-size: 100%;
-}
-p.balance {
-	text-align:center;
-	margin-top:20px;
-	font-weight: bold;
-	font-size: 150%;
-}
-</style>
+		<base href="/">
+	</head>
+	</head>
+	<body ng-app="budgyApp">
+		<div class="container">
 
-<head>
-<body ng-app="budgyApp" ng-controller="NavbarCtrl as navbar">
-	<nav class="navbar navbar-inverse">
+		  <nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a class="navbar-brand" style="color: #00E600">ıllıllı вυ∂gу ıllıllı</a>
@@ -87,7 +43,7 @@ p.balance {
 					</a>
 				</li>
 				<li ng-class="{active:navbar.isSelected(4)}">
-					<a href="#/reports" ng-click="navbar.selectedTab(4)">
+					<a href="#/" ng-click="navbar.selectedTab(4)">
 						<span class="glyphicon glyphicon-stats" style="color: #00E600"></span> 
 						REPORTS
 					</a>
@@ -115,13 +71,14 @@ p.balance {
 				</li>
 			</ul>
         </nav>
-<br><br>
-<center>
 
-<div ng-view=""></div>
 
-</center>
-		
+		  <div ng-view=""></div>
+		  
+		</div> <!-- /container -->
+	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
@@ -134,12 +91,17 @@ p.balance {
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-resource.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-sanitize.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-touch.js"></script>	
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
-	
-	
+
+	<!-- jQuery -->
+	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/script.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
+
 	<script src="modules/core/controllers/app.js"></script>
-	<script src="modules/core/controllers/navigationController.js"></script>
-	<script src="modules/envelopes/controllers/envelopesController.js"></script>
-	<script src="modules/transactions/controllers/transactionsController.js"></script>
-</body>
+	<script src="modules/lists/controllers/listsController.js"></script>
+	<script src="modules/items/controllers/itemsController.js"></script>
+	</body>
 </html>

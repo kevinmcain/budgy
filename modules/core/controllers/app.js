@@ -40,6 +40,10 @@
 				templateUrl: 'modules/envelopes/views/manageEnvelopes.html',
 				controller: 'EnvelopesCtrl'
 		})
+		.when('/manageTransactions/:envelopeID',{
+				templateUrl: 'modules/transactions/views/manageTransactions.html',
+				controller: 'TransactionsCtrl'
+		})
 		.when('/reports/', {
 			templateUrl: 'modules/reports/views/report1.html',
 			controller: 'ReportsCtrl'
