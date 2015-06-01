@@ -1,0 +1,7 @@
+<% if (!user) { %>
+	<h2>Welcome To Budgy App! Please log in.</h2>
+	<a href="/auth/facebook">Login with Facebook</a>
+<% } else { %>
+	<h2>Hi, <%= user.displayName %>. Now you are authorized to open an account. </h2> 
+	<h1>BUDGYYY -  Manage your budget </h1>
+<% } %>

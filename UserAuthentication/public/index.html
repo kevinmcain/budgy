@@ -1,0 +1,107 @@
+<html>
+	<head> 
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+		<!-- Bootstrap Core CSS -->
+		<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css">
+		<link rel="stylesheet" href="css/main.css" type="text/css">
+
+		<base href="/">
+	</head>
+	</head>
+	<body ng-app="budgyApp">
+		<div class="container">
+
+		  <nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" style="color: #00E600">ıllıllı вυ∂gу ıllıllı</a>
+			</div>
+
+			<ul class="nav navbar-nav">
+				<li ng-class="{active:navbar.isSelected(1)}">
+					<a href="#/envelopes" ng-click="navbar.selectedTab(1)">
+						<span class="glyphicon glyphicon-home" style="color: #00E600"></span> 
+						HOME
+					</a>
+				</li>
+				<li ng-class="{active:navbar.isSelected(2)}">
+					<a href="#/manageEnvelopes" ng-click="navbar.selectedTab(2)">
+						<span class="glyphicon glyphicon-envelope" style="color: #00E600"></span>
+						MANAGE ENVELOPES
+					</a>
+				</li>
+				<li ng-class="{active:navbar.isSelected(3)}">
+					<a href="#/" ng-click="navbar.selectedTab(3)">
+						<span class="glyphicon glyphicon-credit-card" style="color: #00E600"></span> 
+						TRANSACTIONS
+					</a>
+				</li>
+				<li ng-class="{active:navbar.isSelected(4)}">
+					<a href="#/" ng-click="navbar.selectedTab(4)">
+						<span class="glyphicon glyphicon-stats" style="color: #00E600"></span> 
+						REPORTS
+					</a>
+				</li>
+				<li ng-class="{active:navbar.isSelected(5)}">
+					<a href="#/" ng-click="navbar.selectedTab(5)">
+						<span class="glyphicon glyphicon-question-sign" style="color: #00E600"></span> 
+						HELP
+					</a>
+				</li>
+			</ul>
+			
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="#/">
+						<span class="glyphicon glyphicon-user" style="color: #00E600"></span> 
+						Sign Up
+					</a>
+				</li>
+				<li>
+					<a href="#/">
+						<span class="glyphicon glyphicon-log-in" style="color: #00E600"></span> 
+						Logout
+					</a>
+				</li>
+			</ul>
+        </nav>
+
+
+		  <div ng-view=""></div>
+		  
+		</div> <!-- /container -->
+	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-animate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-aria.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-cookies.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-messages.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-resource.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-sanitize.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-touch.js"></script>	
+
+	<!-- jQuery -->
+	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/script.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
+
+	<script src="modules/core/controllers/app.js"></script>
+	<script src="modules/lists/controllers/listsController.js"></script>
+	<script src="modules/items/controllers/itemsController.js"></script>
+	</body>
+</html>
