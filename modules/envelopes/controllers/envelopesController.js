@@ -107,7 +107,12 @@
 	// It is not the same as the $modal service used above.
 
 	app.controller('ModalInstanceCtrl', 
-		function ($scope, $modalInstance, envelope) {
+		function ($scope, $modalInstance, envelope, $http) {
+		
+		$http.get('/categories').success(function(data, status, headers, config) {
+			$scope.categories = data;
+			$scope.selectedItem = $scope.categories[0];
+		});
 		
 		// deep copy clone
 		$scope.envelope = jQuery.extend(true, {}, envelope);

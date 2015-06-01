@@ -9,31 +9,12 @@
 					<div class="modal-body">
 						<div class="row">
 							<div class="col-md-12">
-                            					<label>Category :</label>
-								<select class="form-control" ng-model="envelope.category">
-									<option> Select Category </option>
-									<option selected="selected">Groceries</option>
-									<option>Education</option>
-									<option>Entertainment</option>
-									<option>Gifts/Donations</option>
-									<option>Healthcare/Medical</option>
-									<option>Shopping</option>
-									<option>Savings/Investment</option>
-									<option>Insurance</option>
-									<option>Income</option>
-									<option>Personal Care</option>
-									<option>Housing</option>
-									<option>Taxes</option>
-									<option>Travel</option>
-									<option>Children/Dependent Expenses</option>
-									<option>Bank Activity</option>
-									<option>Automotive Expenses</option>
-									<option>Business</option>
-									<option>Debt</option>
-									<option>Utilities</option>
-									<option>Leisure</option>
+								<label>Category :</label>
+								<select class=  "form-control" ng-model="envelope.category">
+									<option ng-repeat="category in categories">{{category.name}}</option>
+									<!--<option selected="selected">Groceries</option>-->
 								</select>
-                					</div>
+							</div>
 							<div class="col-md-12">
 								<label>Amount ($) :</label>
 								<input type="text" ng-model="envelope.amount" class="form-control">
