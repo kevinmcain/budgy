@@ -20,6 +20,11 @@ if('development' == app.get('env')) {
 	mongoose.connect('mongodb://127.0.0.1/budgy');
 }
 
+var categorySchema = mongoose.Schema({
+	_id: mongoose.Schema.Types.ObjectId,
+	name: { type: String, required: true }
+});
+
 var envelopeSchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
 	bid: { type: String, required: true },
@@ -34,11 +39,23 @@ var envelopeSchema = mongoose.Schema({
 // specify modelName, schemaObject, collectionName
 var EnvelopeModel = 
 	mongoose.model('envelopeModel', envelopeSchema, 'envelope');
+	
+var CategoryModel = 
+	mongoose.model('categorySchema', categorySchema, 'categories');	
 
 db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function (callback) {
   	console.log('opened mongo connection');
+});
+
+app.get('/categories', function (req, res) {
+	
+	CategoryModel.find({}, 
+		function(err, categories) {
+		
+		res.send(categories);
+	});
 });
 
 //get the transactions
@@ -171,6 +188,7 @@ app.get('/envelopes/:budgetId', function (req, res) {
 		}
 	], function(err, envelopes) {
 		res.send(envelopes);
+		//res.json(envelopes); //vs having json?
 	});
 	
 });
