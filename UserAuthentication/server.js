@@ -40,8 +40,7 @@ var jsonParser = bodyParser.json();
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-var Lists;
-var Tasks;
+
 
 var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } } }; 
 mongoose.connect(mongooseUri, options);
@@ -73,33 +72,6 @@ mongoose.connection.on('open', function() {
 		{collection: 'users'}
 	);	
 	Users = mongoose.model('Users', UsersSchema);
-	var ListsSchema = new Schema( 
-		{ 
-			name: String,
-			description: String,
-			listId: String,
-			due: String,
-			state: String,
-			owner: String
-		},
-	   {collection: 'lists'}
-	);
-	Lists = mongoose.model('Lists', ListsSchema);	
-	var TasksSchema = new Schema( 
-		{
-			listId: String,
-			owner: String,
-			tasks: [ {
-			   description: String,
-			   taskId: String,
-			   shared: String,
-			   status: String
-			}]
-		},
-	   {collection: 'tasks'}
-	);
-	Tasks = mongoose.model('Tasks', TasksSchema);
-	console.log('models have been created');
 });
 
 function displayDBError(err){
@@ -115,52 +87,6 @@ function displayDBError(err){
 }
 
 console.log("before creating query functions");
-function retrieveAllLists(req, res) {
-	if (req.session.user) {
-		console.log("calling retrieveAllLists");
-		//console.log(JSON.stringify(req.session, null, 2));
-		console.log("user id:" + req.session.user);
-		var query = Lists.find({owner: req.session.user});
-		query.exec(function (err, itemArray) {
-			displayDBError(err);
-			console.log("result: " + itemArray);
-			res.json(itemArray);
-		});
-	}
-	else {
-		res.send('need to login');
-	}
-}
-
-function retrieveListDetails(req, res, queryParams) {
-	console.log("calling retrieveListDetails");
-	queryParams.owner = req.session.user;
-	var query = Lists.findOne(queryParams);
-	query.exec(function (err, itemArray) {
-		displayDBError(err);
-		console.log("result: " + itemArray);
-		res.json(itemArray);
-	});
-}
-
-function retrieveListTasksDetails(res, query) {
-	console.log("calling retrieveListTaskDetails");
-	var query = Tasks.findOne(query);
-	query.exec(function (err, itemArray) {
-		displayDBError(err);
-		console.log("result: " + itemArray);
-		res.json(itemArray);		
-	});
-}
-
-function retrieveTasksCount(res, query) {
-	console.log("calling retrieveTasksCount");
-	var query = Tasks.find(query).select('tasks').count();
-	query.exec(function (err, numberOfTasks) {
-		displayDBError(err);
-		res.json(numberOfTasks);
-	});
-}
 
 function retrieveUserId(req, res, query) {
 	console.log("calling retrieve user Id");
@@ -237,55 +163,6 @@ app.get('/app/login/', function (req, res) {
 	retrieveUserIdWithPwd(req, res, {username: id});
 });
 
-
-app.get('/app/lists/:listId/count', function (req, res) {
-	var id = req.params.listId;
-	retrieveTasksCount(res, {listId: id});
-});
-
-app.post('/app/lists/', jsonParser, function(req, res) {
-	var jsObj = req.body;
-	jsObj.listId = new mongoose.Types.ObjectId;
-	jsObj.owner = req.session.user;
-	console.log('new list submitted' + JSON.stringify(jsObj));
-	
-	Lists.create([jsObj], function (err) {
-		if (err) {
-			console.log('object creation failed');
-			displayDBError(err);
-		}
-		else {
-			console.log('object created: ' + jsObj);
-		}
-	});
-	res.send(jsObj.listId.valueOf());
-});
-
-app.put('/app/lists/:listId', jsonParser, function(req, res) {
-	var id = req.params.listId;
-	var jsObj = req.body;
-	jsObj.owner = req.session.user;
-	Lists.update({listId: id}, jsObj, {multi: false}, function (err) {
-		if (err) {
-			console.log('object update failed');
-		}
-	});
-	res.sendStatus(200);
-});
-
-app.get('/app/lists/:listId', function (req, res) {
-	var id = req.params.listId;
-	retrieveListDetails(req, res, {listId: id});
-});
-
-app.get('/app/tasks/:listId', function (req, res) {
-	var id = req.params.listId;
-	retrieveListTasksDetails(res, {listId: id, owner: req.session.user});
-});
-
-app.get('/app/lists/', function (req, res) {
-	retrieveAllLists(req, res);
-});
 
 console.log("after defining all dynamic routes");
 
