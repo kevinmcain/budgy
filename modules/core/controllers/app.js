@@ -57,7 +57,7 @@
 	// we could have a login controller set the budgetId & userId 
 	// in the rootScope. Something like the controller below
 	app.controller('LoginCtrl', ['$rootScope', function($rootScope) {
-		$rootScope.budgetId = 1;
+		$rootScope.budgetId = "556eac31761b9d2e6e6d6ffd";
 	}]);
 	
 })();

@@ -3,6 +3,7 @@ var app = express();
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var db = mongoose.connection;
+var mongoConn = require('./db.config');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -16,8 +17,11 @@ app.use('/images', express.static(__dirname + '/images'));
 app.use(express.static(__dirname + '/'));
 
 if('development' == app.get('env')) {
-	//mongoose.connect('mongodb://sa:<password>@ds034878.mongolab.com:34878/buhjit');
 	mongoose.connect('mongodb://127.0.0.1/budgy');
+}
+else
+{
+	mongoose.connect(mongoConn.uri);
 }
 
 var categorySchema = mongoose.Schema({
@@ -266,45 +270,6 @@ app.put('/envelopes/:envelope_id', function (req, res) {
 		{
 			res.send(err);
 		}
-		
-		// ---------------------------------------------------------------
-		// ---------------------------------------------------------------
-		// ---------------------------------------------------------------
-	/*	
-		var transactions = envelope.transactions;
-		var transaction = transactions[0];
-		
-		console.log('_id: %s, desc: %s, expense: %s, date: %s'
-			,transaction._id
-			,transaction.description
-			,transaction.expense
-			,transaction.date);
-		
-		transaction.expense = 3;
-		
-		EnvelopeModel.findOneAndUpdate(
-		{ "_id": envelope_id, "transactions._id": transaction._id },
-			{ 
-				"$set": {
-					"transactions.$": transaction
-				}
-				
-				// alternatively, you can update individual members
-				// "$set": {
-					// "transactions.$.expense": transaction.expense
-				// }
-			},
-			function(err,doc) {
-				if (err)
-				{
-					console.log(err.errmsg);
-				}
-			}
-		); */
-		
-		// ---------------------------------------------------------------
-		// ---------------------------------------------------------------
-		// ---------------------------------------------------------------
 
 		envelope.amount = req.body.amount;
 		envelope.category = req.body.category;
@@ -434,4 +399,4 @@ app.delete('/envelopes/:envelope_id', function (req, res) {
 });
 
 
-app.listen(8080);
+app.listen(process.env.PORT || 8080);
