@@ -139,7 +139,9 @@ function retrieveUserIdWithPwd(req, res, query) {
 							req.session.username = user.username;
 							req.session.email = user.email;
 
-							res.sendStatus(200);
+							//res.sendStatus(200);
+							// should not be here, LoginController should next 
+							res.redirect('/index.html');
 						}				
 					}
 				);
@@ -152,7 +154,10 @@ function retrieveUserIdWithPwd(req, res, query) {
 }
 
 console.log("before defining app static route");
-app.use('/', express.static('./'));
+
+// todo: kcain - potentially delete after verifying this is not needed
+//app.use('/', express.static('./'));
+app.use(express.static(__dirname + '/'));
 
 app.get('/app/login/:username', function (req, res) {
 	console.log("making a login request to server");
@@ -298,7 +303,7 @@ app.get('/transactions/:envelopeID' , function (req, res){
 //get the envelopes
 app.get('/envelopes/:budgetId', function (req, res) {
 	
-	var budgetId = req.params.budgetId;
+	var budgetId = req.session.budgetId;
 	
 	var date = new Date();
 	
