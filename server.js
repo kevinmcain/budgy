@@ -477,12 +477,12 @@ app.put('/envelopes/:envelope_id', function (req, res) {
 // create the envelope
 app.post('/envelopes', function (req, res) {
 	
-	console.log('creating envelope for budgetId: %s', req.body.bid);
+	console.log('creating envelope for budgetId: %s', req.session.budgetId);
 	
 	var envelope = new EnvelopeModel();
 	
 	envelope._id = mongoose.Types.ObjectId();
-	envelope.bid = req.body.bid;
+	envelope.bid = req.session.budgetId;
 	envelope.category = req.body.category;
 	envelope.amount = req.body.amount;
 	
