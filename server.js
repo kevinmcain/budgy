@@ -113,32 +113,43 @@ function retrieveUserIdWithPwd(req, res, query) {
 		if (!user) {
 			req.session.user = undefined;
 			res.sendStatus(404);
-			return;
+			console.log("errors accessing users");
 		}
 		else {
+			
 			var pwd = req.query.password;
 			var hashedPwd = crypto.createHash('sha256').update(pwd).digest('base64').toString();
+			var userId = user.id.valueOf();
+			
+			console.log("----------->user info:" + user);
 			
 			if (hashedPwd === user.hashed_pwd) {
-				req.session.user = user.id.valueOf();
-				req.session.username = user.username;
-				req.session.email = user.email;
+				
 				console.log('user information is correct');
+				
+				BudgetModel.findOne({ user_id: userId},
+					function(err, budget) {
+						if (err) {
+							console.log(err.errmsg);
+						}
+						else {
+						
+							req.session.budgetId = budget.id.valueOf();
+							req.session.user = userId;
+							req.session.username = user.username;
+							req.session.email = user.email;
+
+							res.sendStatus(200);
+						}				
+					}
+				);
 			}
 			else {
 				console.log('incorrect password');
 			}
 		}
-		if (err) {
-			console.log("errors accessing users");
-		}
-		else {
-			console.log("----------->user info:" + user);
-			res.sendStatus(200);
-		}
 	});	
 }
-
 
 console.log("before defining app static route");
 app.use('/', express.static('./'));
@@ -189,6 +200,11 @@ if('development' == app.get('env')) {
 	mongoose.connect('mongodb://127.0.0.1/budgy');
 }
 */
+var budgetSchema = mongoose.Schema({
+	_id: mongoose.Schema.Types.ObjectId,
+	user_id: mongoose.Schema.Types.ObjectId
+});
+
 var categorySchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
 	name: { type: String, required: true }
@@ -206,11 +222,14 @@ var envelopeSchema = mongoose.Schema({
 });
 
 // specify modelName, schemaObject, collectionName
-var EnvelopeModel = 
-	mongoose.model('envelopeModel', envelopeSchema, 'envelope');
+var BudgetModel = 
+	mongoose.model('budgetSchema', budgetSchema, 'budget');	
 	
 var CategoryModel = 
 	mongoose.model('categorySchema', categorySchema, 'categories');	
+
+var EnvelopeModel = 
+	mongoose.model('envelopeModel', envelopeSchema, 'envelope');
 
 db.on('error', console.error.bind(console, 'connection error:'));
 
@@ -296,7 +315,6 @@ app.get('/envelopes/:budgetId', function (req, res) {
 	
 	console.log('requested bid: %s', budgetId);
 	
-	// Agregação Mongo é ridiculamente divertido
 	EnvelopeModel.aggregate([
 		{ $match: { bid: budgetId } },
 		// if there are no transactions then we need to project one with 0 expense for this month
@@ -436,45 +454,6 @@ app.put('/envelopes/:envelope_id', function (req, res) {
 			res.send(err);
 		}
 		
-		// ---------------------------------------------------------------
-		// ---------------------------------------------------------------
-		// ---------------------------------------------------------------
-	/*	
-		var transactions = envelope.transactions;
-		var transaction = transactions[0];
-		
-		console.log('_id: %s, desc: %s, expense: %s, date: %s'
-			,transaction._id
-			,transaction.description
-			,transaction.expense
-			,transaction.date);
-		
-		transaction.expense = 3;
-		
-		EnvelopeModel.findOneAndUpdate(
-		{ "_id": envelope_id, "transactions._id": transaction._id },
-			{ 
-				"$set": {
-					"transactions.$": transaction
-				}
-				
-				// alternatively, you can update individual members
-				// "$set": {
-					// "transactions.$.expense": transaction.expense
-				// }
-			},
-			function(err,doc) {
-				if (err)
-				{
-					console.log(err.errmsg);
-				}
-			}
-		); */
-		
-		// ---------------------------------------------------------------
-		// ---------------------------------------------------------------
-		// ---------------------------------------------------------------
-
 		envelope.amount = req.body.amount;
 		envelope.category = req.body.category;
 		
