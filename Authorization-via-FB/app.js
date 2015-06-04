@@ -12,10 +12,6 @@ var express = require('express')
   , mongoose = require('mongoose');
 
 var db = mongoose.connection;
-var FACEBOOK_APP_ID = "1578650549075293"; 
-var FACEBOOK_APP_SECRET = "266246799c208f1e7e2f248a4dcdce9c";
-var FACEBOOK_CALLBACK_URL = 'http://localhost:8080/auth/facebook/callback';
-
 mongoose.connect('mongodb://127.0.0.1/budgy');
 
 var usersSchema = mongoose.Schema({
@@ -31,25 +27,15 @@ var usersSchema = mongoose.Schema({
 var UserModel = 
 	mongoose.model('userModel', usersSchema, 'users');
 
-// Passport session setup.
-//   To support persistent login sessions, Passport needs to be able to
-//   serialize users into and deserialize users out of the session.  Typically,
-//   this will be as simple as storing the user ID when serializing, and finding
-//   the user by ID when deserializing.  However, since this example does not
-//   have a database of user records, the complete Windows Live profile is
-//   serialized and deserialized.
-// passport.serializeUser(function(user, done) {
-  // done(null, user);
-// });
-
-// passport.deserializeUser(function(obj, done) {
-  // done(null, obj);
-// });
 
 
 // =========================================================================
 // FACEBOOK ================================================================
 // =========================================================================
+
+var FACEBOOK_APP_ID = "1578650549075293"; 
+var FACEBOOK_APP_SECRET = "266246799c208f1e7e2f248a4dcdce9c";
+var FACEBOOK_CALLBACK_URL = 'http://localhost:8080/auth/facebook/callback';
 
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
@@ -62,6 +48,14 @@ passport.deserializeUser(function(id, done) {
 		done(err, user);
 	});
 });
+
+// passport.serializeUser(function(user, done) {
+  // done(null, user);
+// });
+
+// passport.deserializeUser(function(obj, done) {
+  // done(null, obj);
+// });
 
 passport.use(new FacebookStrategy({
 
@@ -173,6 +167,41 @@ function(token, refreshToken, profile, done) {
   // }
 // ));
 
+// =====================================
+// FACEBOOK ROUTES =====================
+// =====================================
+
+app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+// handle the callback after facebook has authenticated the user
+app.get('/auth/facebook/callback',
+	passport.authenticate('facebook', {
+		successRedirect : '/envelopes',
+		failureRedirect : '/'
+	}));
+
+// route for logging out
+app.get('/logout', function(req, res) {
+	req.logout();
+	res.redirect('/');
+});
+	
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+}
+
+
+
+
+// still unsure what, if anything, is needed below...
+
 var app = express();
 var server = http.createServer(app);
 
@@ -210,6 +239,13 @@ app.get('/layout', function(req, res){
   }
 });
 
+//var port = process.env.PORT || 8080;
+var port = 8080;
+
+server.listen(port, function() {
+	console.log("Express server listening on port " + port);
+});
+
 //app.get('/account', ensureAuthenticated, function(req, res){
 // app.get('/account', function(req, res){
 	// if (req.isAuthenticated()) {
@@ -230,40 +266,6 @@ app.get('/layout', function(req, res){
 // app.get('/login', function(req, res){
   // res.render('login', { user: req.user } );
 // });
-
-
-
-
-// =====================================
-    // FACEBOOK ROUTES =====================
-    // =====================================
-    // route for facebook authentication and login
-    app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
-
-    // handle the callback after facebook has authenticated the user
-    app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', {
-            successRedirect : '/envelopes',
-            failureRedirect : '/'
-        }));
-
-    // route for logging out
-    app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
-    });
-	
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-}
-
 
 // // GET /auth/facebook 
 // //   Use passport.authenticate() as route middleware to authenticate the 
@@ -292,14 +294,6 @@ function isLoggedIn(req, res, next) {
   // req.logout();
   // res.redirect('/');
 // });
-
-//var port = process.env.PORT || 8080;
-var port = 8080;
-
-server.listen(port, function() {
-	console.log("Express server listening on port " + port);
-});
-
 
 // Simple route middleware to ensure user is authenticated.
 //   Use this route middleware on any resource that needs to be protected.  If
