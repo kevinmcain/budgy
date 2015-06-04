@@ -1,19 +1,45 @@
-var express = require('express');
-var app = express();
-var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
-var db = mongoose.connection;
-var mongoConn = require('./db.config');
+var express = require('express')
+	,mongoConn = require('./db.config')
+	,mongoose = require('mongoose')
+	,bodyParser = require('body-parser')
+    ,util = require('util')
+	,ejs = require('ejs')
+	,http = require('http')
+    ,morgan = require('morgan')
+	,passport = require('passport')
+	,methodOverride = require('method-override')
+	,cookieParser = require('cookie-parser')
+	,session = require('express-session')
+	,facebookStrategy = require('passport-facebook').Strategy;
 
-// this will let us get request.body
-app.use(bodyParser.urlencoded({ extended: true }));
+var app = express();
+var db = mongoose.connection;
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.engine('html', ejs.renderFile);
+app.use(morgan('combined'));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({extend: false}));
 app.use(bodyParser.json());
+app.use(methodOverride());
+app.use(session({ secret: 'keyboard cat' }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.Router());
+
+app.use(bodyParser.json());
+
 
 //serve static images for the app from the 'images' directory
 app.use('/images', express.static(__dirname + '/images'));
 
 //serve all things
-app.use(express.static(__dirname + '/'));
+app.use(express.static(__dirname + '/'), function (req, res, next) {
+  console.log('Request Type:', req.method);
+  next();
+});
 
 if('development' == app.get('env')) {
 	mongoose.connect('mongodb://127.0.0.1/budgy');
@@ -24,6 +50,16 @@ else
 }
 
 app.listen(process.env.PORT || 8080);
+
+var usersSchema = mongoose.Schema({
+	fName: String,
+	lName: String,
+	username: String,
+	email: String,
+	extra: String,
+	facebookId: String,
+	hashed_pwd: String
+});
 
 var budgetSchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
@@ -47,6 +83,12 @@ var envelopeSchema = mongoose.Schema({
 });
 
 // specify modelName, schemaObject, collectionName
+var UserModel = 
+	mongoose.model('userModel', usersSchema, 'users');
+	
+var BudgetModel = 
+	mongoose.model('budgetSchema', budgetSchema, 'budget');
+
 var EnvelopeModel = 
 	mongoose.model('envelopeModel', envelopeSchema, 'envelope');
 	
@@ -59,6 +101,191 @@ db.once('open', function (callback) {
   	console.log('opened mongo connection');
 });
 
+
+// =========================================================================
+// FACEBOOK ================================================================
+// =========================================================================
+
+var FACEBOOK_APP_ID = "1578650549075293"; 
+var FACEBOOK_APP_SECRET = "266246799c208f1e7e2f248a4dcdce9c";
+var FACEBOOK_CALLBACK_URL = 'http://localhost:8080/auth/facebook/callback';
+
+// used to serialize the user for the session
+// passport.serializeUser(function(user, done) {
+	// done(null, user.id);
+// });
+
+// // used to deserialize the user
+// passport.deserializeUser(function(id, done) {
+	// UserModel.findById(id, function(err, user) {
+		// done(err, user);
+	// });
+// });
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+passport.use(new facebookStrategy({
+
+	// pull in our app id and secret from our auth.js file
+	clientID        : FACEBOOK_APP_ID,
+	clientSecret    : FACEBOOK_APP_SECRET,
+	callbackURL     : FACEBOOK_CALLBACK_URL
+
+},
+
+// facebook will send back the token and profile
+function(token, refreshToken, profile, done) {
+
+	// asynchronous
+	process.nextTick(function() {
+
+	
+	
+	UserModel.findOne({ facebookId: profile.id},
+		function(err, user) {
+			if (err) {
+				console.log(err.errmsg);
+				return done(err);
+			}
+			
+			if (user) {
+				
+				BudgetModel.findOne({ user_id: user.id.valueOf()},
+					function(err, budget) {
+						if (err) {
+							console.log(err.errmsg);
+						}
+						else {
+							user._doc.budgetId = budget.id.valueOf();
+							return done(null, user); // user found, return that user
+						}				
+					}
+				);
+			}
+			else
+			{
+				// var newUser            = new User();
+
+				// // set all of the facebook information in our user model
+				// newUser.facebook.id    = profile.id; // set the users facebook id                   
+				// newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
+				// newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
+				// newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+			}
+		}
+	);
+
+	
+	
+	
+		// find the user in the database based on their facebook id
+		// User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+
+			// // if there is an error, stop everything and return that
+			// // ie an error connecting to the database
+
+
+			// // if the user is found, then log them in
+			// if (user) {
+				// return done(null, user); // user found, return that user
+			// } else {
+				// // if there is no user found with that facebook id, create them
+				// var newUser            = new User();
+
+				// // set all of the facebook information in our user model
+				// newUser.facebook.id    = profile.id; // set the users facebook id                   
+				// newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
+				// newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
+				// newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+
+				// // save our user to the database
+				// newUser.save(function(err) {
+					// if (err)
+						// throw err;
+
+					// // if successful, return the new user
+					// return done(null, newUser);
+				// });
+			// }
+
+		// });
+	});
+
+}));
+
+// =====================================
+// FACEBOOK ROUTES =====================
+// =====================================
+
+app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+app.get('/auth/facebook/callback',
+	passport.authenticate('facebook', {
+		successRedirect : '/#/envelopes',
+		failureRedirect : '/'
+	}));
+
+// app.get('/auth/facebook/callback', function(req, res, next) {
+  // passport.authenticate('facebook', function(err, user, info) {
+    // if (err) { return next(err); }
+    // if (!user) { return res.redirect('/login'); }
+    // req.logIn(user, function(err) {
+      // if (err) { return next(err); }
+      // return res.redirect('/#/envelopes');
+    // });
+  // })(req, res, next);
+// });
+	
+
+// route for logging out
+app.get('/logout', function(req, res) {
+	req.logout();
+	res.redirect('/');
+});
+	
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+}
+
+// =========================================================================
+// FACEBOOK DONE ===========================================================
+// =========================================================================
+
+function getBudget() {
+
+	BudgetModel.findOne({ user_id: userId},
+		function(err, budget) {
+			if (err) {
+				console.log(err.errmsg);
+			}
+			else {
+			
+				req.session.budgetId = budget.id.valueOf();
+				req.session.user = userId;
+				req.session.username = user.username;
+				req.session.email = user.email;
+
+				//res.sendStatus(200);
+				// should not be here, LoginController should next 
+				res.redirect('/index.html');
+			}				
+		}
+	);
+}
+
 app.get('/categories', function (req, res) {
 	
 	CategoryModel.find({}, 
@@ -70,7 +297,7 @@ app.get('/categories', function (req, res) {
 
 //get the transactions
 app.get('/transactions/:envelopeID' , function (req, res){
-	var envelope_ID = req.params.envelopeID;
+	var envelope_ID = req.user.envelopeID;
 	
 		var date = new Date();
 	
@@ -118,9 +345,9 @@ app.get('/transactions/:envelopeID' , function (req, res){
 });
 
 //get the envelopes
-app.get('/envelopes/:budgetId', function (req, res) {
+app.get('/envelopes/:budgetId', isLoggedIn, function (req, res, next) {
 	
-	var budgetId = req.params.budgetId;
+	var budgetId = req.user.budgetId;
 	
 	var date = new Date();
 	
