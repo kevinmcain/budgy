@@ -24,7 +24,7 @@ usersCollection.insert(
 	username: 'ishwant',
 	email: emailIshwant,
 	extra: 'Ishwant info',
-	hashed_pwd: 'EuoS6s59ZV9HHOVeNPibG3ej2dBaRFyoKHfdIjW+qlE='
+	hashed_pwd: 'n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg='
 }
 )
 usersCollection.insert(
@@ -34,7 +34,7 @@ usersCollection.insert(
 	username: 'caink2',
 	email: emailKevin,
 	extra: 'Kevin info',
-	hashed_pwd: 'EuoS6s59ZV9HHOVeNPibG3ej2dBaRFyoKHfdIjW+qlE='
+	hashed_pwd: 'n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg='
 }
 )
 
