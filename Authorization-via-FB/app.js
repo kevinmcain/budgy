@@ -14,6 +14,9 @@ var express = require('express')
 var db = mongoose.connection;
 mongoose.connect('mongodb://127.0.0.1/budgy');
 
+var app = express();
+var server = http.createServer(app);
+
 var usersSchema = mongoose.Schema({
 	fName: String,
 	lName: String,
@@ -202,8 +205,7 @@ function isLoggedIn(req, res, next) {
 
 // still unsure what, if anything, is needed below...
 
-var app = express();
-var server = http.createServer(app);
+
 
 // configure Express
 //app.configure(function() {
@@ -229,6 +231,8 @@ var server = http.createServer(app);
 app.get('/', function(req, res){
   res.render('index', { user: req.user });
 });
+
+app.use(express.static(__dirname + '/'));
 
 app.get('/layout', function(req, res){
   if (req.isAuthenticated()) {
