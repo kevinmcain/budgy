@@ -14,6 +14,7 @@ usersCollection.insert(
 	username: 'sravani',
 	email: emailSravani,
 	extra: 'Sravani info',
+	facebookId: '',
 	hashed_pwd: 'n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg='
 }
 )
@@ -24,6 +25,7 @@ usersCollection.insert(
 	username: 'ishwant',
 	email: emailIshwant,
 	extra: 'Ishwant info',
+	facebookId: '',
 	hashed_pwd: 'n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg='
 }
 )
@@ -34,6 +36,7 @@ usersCollection.insert(
 	username: 'caink2',
 	email: emailKevin,
 	extra: 'Kevin info',
+	facebookId: '10101916352705883',
 	hashed_pwd: 'n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg='
 }
 )
