@@ -2,8 +2,8 @@
 	<h1 class="panel-heading">BUDGET OVERVIEW</h1>
 	<label ng-repeat="envelope in envelopes">
 	
-		<div ng-if="envelope.balance > 150">
-			<div class="box">
+		<div ng-if="envelope.percentageSpent < .80">
+			<div class="box" >
 				<a ng-href="#/manageTransactions/{{envelope.category}}" >
 					<p class="cat">{{envelope.category}}</p>
 					<p class="amount">Total: {{envelope.amount | currency}}</p>
@@ -12,7 +12,7 @@
 			</div>
 		</div>
 		
-		<div ng-if="envelope.balance < 150">
+		<div ng-if="envelope.percentageSpent > .80">
 			<div class="box2"> 
 				<a ng-href="#/manageTransactions/{{envelope.category}}" >
 					<p class="cat">{{envelope.category}}</p>
@@ -23,7 +23,3 @@
 		</div>
 	</label>
 </div>
-
-<!-- 
-
--->

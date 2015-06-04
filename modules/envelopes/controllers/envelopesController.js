@@ -88,6 +88,7 @@
 				
 				}, function () {
 					$log.info('Modal dismissed at: ' + new Date());
+					
 				});
 			
 		};
@@ -97,6 +98,7 @@
 				var url = '/envelopes/' + envelope._id;
 				$http.delete(url, envelope).success(function(response, status, headers, config){
 					$scope.getEnvelopes();
+					$log.info(envelope);
 				}).error(function(response, status, headers, config){
 					$scope.error_message = response.error_message;		
 				});
