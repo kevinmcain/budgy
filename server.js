@@ -1,5 +1,5 @@
 var express = require('express')
-//	,mongoConn = require('./db.config')
+	,mongoConn = require('./db.config')
 	,mongoose = require('mongoose')
 	,bodyParser = require('body-parser')
     ,util = require('util')
