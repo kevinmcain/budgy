@@ -1,5 +1,5 @@
 var express = require('express')
-	,mongoConn = require('./db.config')
+//	,mongoConn = require('./db.config')
 	,mongoose = require('mongoose')
 	,bodyParser = require('body-parser')
     ,util = require('util')
@@ -476,12 +476,12 @@ app.put('/envelopes/:envelope_id', function (req, res) {
 // create the envelope
 app.post('/envelopes', function (req, res) {
 	
-	console.log('creating envelope for budgetId: %s', req.body.bid);
+	console.log('creating envelope for budgetId: %s', req.user.budgetId);
 	
 	var envelope = new EnvelopeModel();
 	
 	envelope._id = mongoose.Types.ObjectId();
-	envelope.bid = req.body.bid;
+	envelope.bid = req.user.budgetId;
 	envelope.category = req.body.category;
 	envelope.amount = req.body.amount;
 	

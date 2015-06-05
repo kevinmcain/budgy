@@ -17,6 +17,13 @@
   ],
   "dependencies": {
 	"express" : "*",
+	"ejs" : "*",
+	"morgan" : "*",
+	"passport" : "*",
+	"passport-facebook" : "*",
+	"express-session" : "*",
+	"cookie-parser" : "*",
+	"method-override" : "*",
 	"mongoose" : "*",
 	"body-parser" : "*",
 	"mocha" : "*",

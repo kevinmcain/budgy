@@ -1,6 +1,6 @@
 <div class="container" ng-controller='EnvelopesCtrl' ng-init='getEnvelopes()'>
 	<h1 class="panel-heading">BUDGET OVERVIEW</h1>
-	<label ng-repeat="envelope in envelopes">
+	<label ng-repeat="envelope in envelopes| orderBy:'-numberOfTransactions'"">
 	
 		<div ng-if="envelope.percentageSpent < .80">
 			<div class="box" >

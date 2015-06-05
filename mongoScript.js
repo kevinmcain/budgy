@@ -25,7 +25,7 @@ usersCollection.insert(
 	username: 'ishwant',
 	email: emailIshwant,
 	extra: 'Ishwant info',
-	facebookId: '',
+	facebookId: '1118615201',
 	hashed_pwd: 'n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg='
 }
 )
