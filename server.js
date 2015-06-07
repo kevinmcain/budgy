@@ -106,8 +106,8 @@ db.once('open', function (callback) {
 // FACEBOOK ================================================================
 // =========================================================================
 
-var FACEBOOK_APP_ID = "1578650549075293"; 
-var FACEBOOK_APP_SECRET = "266246799c208f1e7e2f248a4dcdce9c";
+var FACEBOOK_APP_ID = ""; 
+var FACEBOOK_APP_SECRET = "";
 var FACEBOOK_CALLBACK_URL = 'http://buhjit.azurewebsites.net/auth/facebook/callback';
 
 // used to serialize the user for the session
