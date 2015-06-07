@@ -25,7 +25,7 @@ usersCollection.insert(
 	username: 'ishwant',
 	email: emailIshwant,
 	extra: 'Ishwant info',
-	facebookId: '1118615201',
+	facebookId: '',
 	hashed_pwd: 'n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg='
 }
 )
@@ -36,7 +36,7 @@ usersCollection.insert(
 	username: 'caink2',
 	email: emailKevin,
 	extra: 'Kevin info',
-	facebookId: '10101916352705883',
+	facebookId: '',
 	hashed_pwd: 'n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg='
 }
 )
